@@ -1,0 +1,245 @@
+@font-face { font-family: Inter; font-weight: 400; font-display: swap; src: url("schrift/inter-400.woff2") format("woff2"); }
+@font-face { font-family: Inter; font-weight: 600; font-display: swap; src: url("schrift/inter-600.woff2") format("woff2"); }
+@font-face { font-family: Inter; font-weight: 700; font-display: swap; src: url("schrift/inter-700.woff2") format("woff2"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 500; font-display: swap; src: url("schrift/space-grotesk-500.woff2") format("woff2"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 700; font-display: swap; src: url("schrift/space-grotesk-700.woff2") format("woff2"); }
+
+:root {
+  color-scheme: light;
+  --grund: #f5f6f8;
+  --flaeche: #ffffff;
+  --text: #0f172a;
+  --leise: #556070;
+  --linie: #e3e6eb;
+  --navy: #17447e;
+  --navy-dunkel: #10325e;
+  --navy-hell: #e9eff8;
+  --rund: 22px;
+  --schatten: 0 24px 48px -28px rgb(15 23 42 / 0.35);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 80px; }
+body {
+  margin: 0;
+  background: var(--grund);
+  color: var(--text);
+  font: 400 1.0625rem/1.65 Inter, system-ui, sans-serif;
+  font-feature-settings: "cv11", "ss03";
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: var(--navy); text-underline-offset: 0.2em; }
+h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; margin: 0; }
+/* Überschriften, große Zahlen und Name in Space Grotesk, Fließtext bleibt Inter wie in den Berichten */
+h1, h2, h3, .zahl, .marke { font-family: "Space Grotesk", Inter, system-ui, sans-serif; }
+p { text-wrap: pretty; }
+small { font-size: 0.8em; font-weight: 400; opacity: 0.8; }
+
+.rahmen { max-width: 1160px; margin-inline: auto; padding-inline: clamp(16px, 4vw, 40px); }
+
+/* Kopf- und Fußleiste */
+.kopfleiste {
+  position: sticky; top: 0; z-index: 10;
+  background: rgb(245 246 248 / 0.82);
+  backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid rgb(15 23 42 / 0.06);
+}
+.kopfleiste-innen { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+.marke { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--text); text-decoration: none; }
+.logo { flex: none; filter: drop-shadow(0 3px 6px rgb(23 68 126 / 0.28)); }
+.logo-s1, .logo-s2 { transform-box: view-box; }
+.kopfleiste nav { display: flex; gap: 22px; }
+.kopfleiste nav a { color: var(--leise); text-decoration: none; font-size: 0.95rem; }
+.kopfleiste nav a:hover { color: var(--text); }
+.fuss { margin-top: 96px; border-top: 1px solid var(--linie); color: var(--leise); font-size: 0.875rem; }
+.fuss-innen { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-block: 28px; }
+
+/* Startseite */
+.held { padding-block: clamp(20px, 4vw, 48px) clamp(32px, 5vw, 56px); }
+.kicker {
+  display: inline-flex; align-items: center; gap: 10px; margin: 0 0 18px;
+  padding: 6px 14px; border-radius: 999px; background: var(--flaeche); border: 1px solid var(--linie);
+  font-size: 0.875rem; font-weight: 600; color: var(--navy);
+}
+.kicker span { width: 8px; height: 8px; border-radius: 50%; background: var(--navy); }
+.held h1 { font-size: clamp(2.1rem, 5vw, 3.75rem); font-weight: 700; letter-spacing: -0.035em; max-width: 19ch; }
+.lead { font-size: clamp(1.05rem, 1.5vw, 1.2rem); color: var(--leise); max-width: 62ch; margin: 22px 0 0; }
+.grundsaetze { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 16px; margin-top: 44px; }
+.grundsaetze div { padding: 18px 20px; border-radius: 16px; background: var(--flaeche); border: 1px solid var(--linie); }
+.grundsaetze h3 { font-size: 1rem; font-weight: 600; }
+.grundsaetze p { margin: 4px 0 0; color: var(--leise); font-size: 0.95rem; }
+
+.abschnitt { font-size: clamp(1.4rem, 2.4vw, 1.75rem); font-weight: 700; margin: 0 0 24px; }
+.raster { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 28px; }
+
+.karte {
+  position: relative; display: flex; flex-direction: column;
+  background: var(--flaeche); border: 1px solid var(--linie); border-radius: var(--rund); overflow: hidden;
+}
+.karte:has(.ganz:focus-visible) { outline: 3px solid var(--navy); outline-offset: 3px; }
+.karte-bild { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--navy-hell); }
+.karte-bild img { width: 100%; height: 100%; object-fit: cover; }
+.karte-bild.leer { display: grid; place-items: center; }
+.karte-bild.leer img { width: 72px; height: auto; opacity: 0.35; }
+.nr {
+  position: absolute; top: 14px; left: 14px; padding: 4px 12px; border-radius: 999px;
+  background: rgb(255 255 255 / 0.9); backdrop-filter: blur(8px);
+  font-size: 0.8rem; font-weight: 600; color: var(--navy);
+}
+.karte-text { display: flex; flex-direction: column; gap: 10px; padding: 22px 24px 24px; flex: 1; }
+.karte-text p { margin: 0; }
+.dach { font-size: 0.8rem; font-weight: 600; color: var(--navy); margin: 0; }
+.karte h3 { font-size: 1.3rem; font-weight: 700; }
+.ganz { color: inherit; text-decoration: none; }
+.ganz::after { content: ""; position: absolute; inset: 0; }
+.kern { color: var(--leise); }
+.links { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: auto; padding-top: 6px; font-size: 0.92rem; font-weight: 600; }
+.links a { position: relative; z-index: 1; text-decoration: none; }
+.links a:hover { text-decoration: underline; }
+.karte-arbeit { border-style: dashed; background: transparent; }
+.karte-arbeit .karte-bild { background: transparent; border-bottom: 1px dashed var(--linie); }
+
+.themen { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.themen li {
+  padding: 3px 11px; border-radius: 999px; background: var(--navy-hell);
+  color: var(--navy); font-size: 0.8rem; font-weight: 600;
+}
+
+/* Startseite mit Karte */
+.held-karte { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(24px, 4vw, 64px); align-items: center; padding-block: clamp(16px, 3vw, 32px) clamp(24px, 4vw, 40px); }
+.held-karte h1 { font-size: clamp(2rem, 3.7vw, 3.25rem); max-width: 20ch; }
+.stadtkarte { position: relative; margin: 0; justify-self: center; width: min(100%, 360px); }
+.karte-flaeche { position: relative; }
+.stadtkarte svg { width: 100%; height: auto; overflow: visible; }
+.unterlage path { fill: #17447e; opacity: 0.12; }
+.ortsteile path { stroke: #fff; stroke-width: 1.2; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+
+/* Matte Ortsteile, darunter ziehen Farbschleier */
+.ortsteile path { fill: rgb(255 255 255 / 0.3); stroke-width: 1.4; transition: fill 0.3s; }
+.ortsteile path:hover { fill: rgb(255 255 255 / 0.75); }
+.bahn ellipse { fill: none; stroke: #17447e; stroke-opacity: 0.3; stroke-width: 1.2; stroke-dasharray: 4 6; vector-effect: non-scaling-stroke; }
+.bahn-hinten ellipse { stroke-opacity: 0.16; }
+.satellit { cursor: help; }
+/* ohne vector-effect, sonst stimmt pathLength der Spur nicht mehr mit dem Satelliten überein */
+.spur { fill: none; stroke-linecap: round; }
+.spur-1 { stroke: #5ea4ee; stroke-width: 7; stroke-opacity: 0.45; }
+.spur-2 { stroke: #9cc3ef; stroke-width: 9; stroke-opacity: 0.9; }
+.komet-glanz { transform-box: fill-box; transform-origin: center; }
+.tipp {
+  position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none; white-space: nowrap;
+  display: flex; flex-direction: column; padding: 8px 14px; border-radius: 14px;
+  background: rgb(15 23 42 / 0.88); backdrop-filter: blur(8px); color: #fff; font-size: 0.8rem; line-height: 1.4;
+}
+.tipp[hidden] { display: none; }
+.tipp strong { font-size: 0.9rem; font-weight: 600; }
+.tipp span { color: rgb(255 255 255 / 0.75); }
+/* Quelle unter der Karte zählt nicht zur Höhe, damit der Text links zur Karte mittig steht */
+.stadtkarte figcaption { position: absolute; top: calc(100% + 10px); left: 0; right: 0; text-align: center; font-size: 0.75rem; color: var(--leise); text-wrap: balance; }
+.stadtkarte figcaption span { white-space: nowrap; }
+
+@media (max-width: 860px) {
+  .held-karte { grid-template-columns: 1fr; }
+  .stadtkarte { order: -1; width: min(70%, 300px); margin-bottom: 36px; }
+}
+
+/* Projektseite */
+.zurueck { display: inline-block; margin: 28px 0 8px; color: var(--leise); text-decoration: none; font-size: 0.95rem; }
+.zurueck:hover { color: var(--text); }
+.projekt-kopf { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 56px); align-items: center; padding-block: 24px 40px; }
+.projekt-kopf h1 { font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 700; letter-spacing: -0.03em; margin-top: 10px; }
+.projekt-kopf .lead { margin-bottom: 20px; }
+.titelfoto { margin: 0; }
+.titelfoto img { width: 100%; aspect-ratio: 7 / 5; object-fit: cover; border-radius: var(--rund); }
+.titelfoto figcaption { margin-top: 8px; font-size: 0.8rem; color: var(--leise); }
+.knoepfe { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.knopf {
+  display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 999px;
+  background: var(--flaeche); border: 1px solid var(--linie); color: var(--text);
+  font-weight: 600; text-decoration: none;
+}
+.knopf:hover { border-color: var(--leise); }
+.knopf.voll { background: var(--navy); border-color: var(--navy); color: #fff; }
+.knopf.voll:hover { background: var(--navy-dunkel); }
+
+.kacheln { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px; margin-bottom: 64px; }
+.kachel { display: flex; flex-direction: column; gap: 6px; padding: 20px 22px; border-radius: 18px; background: var(--flaeche); border: 1px solid var(--linie); color: var(--leise); font-size: 0.95rem; line-height: 1.45; }
+.zahl { font-size: 1.85rem; font-weight: 700; letter-spacing: -0.02em; color: var(--navy); font-variant-numeric: tabular-nums; line-height: 1.1; }
+
+.steckbrief { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 16px; margin: 0 0 64px; }
+.steckbrief div { padding: 20px 22px; border-radius: 18px; background: var(--flaeche); border: 1px solid var(--linie); }
+.steckbrief dt { font-weight: 600; color: var(--navy); font-size: 0.9rem; }
+.steckbrief dd { margin: 4px 0 0; }
+
+.abbildungen { display: grid; gap: 28px; }
+.abb { margin: 0; padding: clamp(18px, 3vw, 32px); border-radius: var(--rund); background: var(--flaeche); border: 1px solid var(--linie); }
+.abb h3 { font-size: clamp(1.15rem, 2vw, 1.45rem); font-weight: 700; margin: 6px 0 18px; max-width: 48ch; }
+.abb img { width: 100%; border-radius: 8px; }
+.abb details { margin-top: 16px; }
+.abb summary { cursor: pointer; font-weight: 600; color: var(--navy); }
+.abb details p { margin: 8px 0 0; color: var(--leise); max-width: 75ch; }
+.abb figcaption { margin-top: 12px; font-size: 0.8rem; color: var(--leise); }
+.mehr { margin-top: 28px; color: var(--leise); }
+
+.nachbarn { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 16px; margin-top: 64px; }
+.nachbarn a { display: flex; flex-direction: column; gap: 4px; padding: 18px 22px; border-radius: 18px; background: var(--flaeche); border: 1px solid var(--linie); color: var(--text); font-weight: 600; text-decoration: none; }
+.nachbarn a:hover { border-color: var(--leise); }
+.nachbarn small { color: var(--navy); font-weight: 600; opacity: 1; }
+.nachbarn .rechts { text-align: right; grid-column: -2; }
+
+@media (max-width: 860px) {
+  .projekt-kopf { grid-template-columns: 1fr; }
+  .titelfoto { order: -1; }
+  .nachbarn .rechts { grid-column: auto; }
+}
+
+/* Bewegung nur, wenn niemand reduzierte Bewegung eingestellt hat */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-group(*) { animation-duration: 0.45s; animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .karte { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+  .karte-bild img { transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .karte:not(.karte-arbeit):hover { transform: translateY(-4px); box-shadow: var(--schatten); }
+  .karte:not(.karte-arbeit):hover .karte-bild img { transform: scale(1.04); }
+  /* Komet: Bahn blendet nach dem Aufbau ein, Lichtpunkt pulsiert */
+  .bahn { animation: einblenden 1.2s 1.3s ease both; }
+  .komet-glanz { animation: komet 2.4s ease-in-out infinite; }
+  @keyframes komet { 50% { transform: scale(1.25); opacity: 0.7; } }
+  /* Logo: Farbschleier treiben, Sterne funkeln */
+  .logo-s1 { animation: logo-treiben 6s ease-in-out infinite alternate; }
+  .logo-s2 { animation: logo-treiben 7s ease-in-out infinite alternate-reverse; }
+  .logo-stern { animation: funkeln 3s ease-in-out infinite; }
+  .logo-stern-2 { animation: funkeln 4s ease-in-out 1s infinite; }
+  @keyframes logo-treiben { from { transform: translate(-4px, -3px); } to { transform: translate(5px, 4px); } }
+  @keyframes funkeln { 50% { opacity: 0.4; } }
+  /* Karte: Ortsteile tauchen vom Zentrum aus auf, danach ruhige Bewegung je nach Stil */
+  .unterlage, .aurora { animation: einblenden 1.4s 0.3s ease both; }
+  .stadtkarte svg { animation: schweben 9s ease-in-out 1.8s infinite alternate; }
+  @keyframes schweben {
+    from { transform: perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(0); }
+    50% { transform: perspective(1200px) rotateX(5deg) rotateY(-6deg) translateY(-6px); }
+    to { transform: perspective(1200px) rotateX(-3deg) rotateY(5deg) translateY(3px); }
+  }
+  .ortsteile path {
+    transform-box: fill-box; transform-origin: center;
+    animation: ortsteil-ein 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+    animation-delay: calc(var(--d) * 0.9s + 0.15s);
+    transition: fill 0.3s;
+  }
+  .blob { transform-box: fill-box; transform-origin: center; animation: treiben 14s ease-in-out infinite alternate; }
+  .b2 { animation-name: treiben-2; animation-duration: 17s; }
+  .b3 { animation-duration: 19s; animation-direction: alternate-reverse; }
+  .b4 { animation-name: treiben-2; animation-duration: 12s; animation-direction: alternate-reverse; }
+  @keyframes ortsteil-ein { from { opacity: 0; transform: scale(0.6); } }
+  @keyframes einblenden { from { opacity: 0; } }
+  /* Farbton der Schleier wandelt sich langsam zwischen Indigo, Blau und Petrol */
+  .farbe-g1 { animation: farbe-g1 18s ease-in-out infinite alternate; }
+  .farbe-g2 { animation: farbe-g2 23s ease-in-out infinite alternate; }
+  .farbe-g3 { animation: farbe-g3 20s ease-in-out infinite alternate-reverse; }
+  .farbe-g4 { animation: farbe-g4 15s ease-in-out infinite alternate; }
+  @keyframes farbe-g1 { 0% { stop-color: #2a78d6; } 50% { stop-color: #3d5fd0; } 100% { stop-color: #2a8bbd; } }
+  @keyframes farbe-g2 { 0% { stop-color: #17447e; } 50% { stop-color: #27398f; } 100% { stop-color: #175a80; } }
+  @keyframes farbe-g3 { 0% { stop-color: #6aa2e6; } 50% { stop-color: #8190ea; } 100% { stop-color: #5bb2d6; } }
+  @keyframes farbe-g4 { 0% { stop-color: #9cc3ef; } 50% { stop-color: #b0b6f3; } 100% { stop-color: #92cde4; } }
+  @keyframes treiben { 0% { transform: translate(-160px, -90px) scale(0.85); } 50% { transform: translate(60px, 140px) scale(1.1); } 100% { transform: translate(170px, -40px) scale(1.2); } }
+  @keyframes treiben-2 { 0% { transform: translate(150px, 80px) scale(1.15); } 50% { transform: translate(-120px, 30px) scale(0.9); } 100% { transform: translate(-40px, -150px) scale(1.05); } }
+}

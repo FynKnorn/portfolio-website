@@ -1,0 +1,8 @@
+name: portfolio-website
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pillow
+  - fonttools
+  - brotli-python
