@@ -117,7 +117,7 @@ def seite(titel: str, beschreibung: str, inhalt: str, tiefe: int = 0) -> str:
 <footer class="fuss">
   <div class="rahmen fuss-innen">
     <span>© 2026 {escape(PERSON['name'])} · Leipzig</span>
-    <span>Fotos von Wikimedia Commons, Nachweis auf den Projektseiten · Impressum folgt</span>
+    <span>Kontakt: <a href="mailto:{PERSON['mail']}">{PERSON['mail']}</a> · <a href="{w}datenschutz/">Datenschutz</a> · Fotos von Wikimedia Commons, Nachweis auf den Projektseiten</span>
   </div>
 </footer>
 </body>
@@ -244,19 +244,6 @@ def startseite_karte() -> str:
     return seite(f"{PERSON['name']} · {REIHE}", PERSON["lead"], inhalt)
 
 
-def startseite_kacheln() -> str:
-    """Variante „Kacheln“ (erste Fassung vom 16.11.)."""
-    grund = "".join(f"<div><h3>{escape(t)}</h3><p>{escape(x)}</p></div>" for t, x in PERSON["grundsaetze"])
-    inhalt = f"""<section class="rahmen held">
-  <p class="kicker"><span></span>{escape(PERSON['kicker'])} · {len(PROJEKTE)} Berichte, {len(IN_ARBEIT)} in Arbeit</p>
-  <h1>{escape(PERSON['titel'])}</h1>
-  <p class="lead">{escape(PERSON['lead'])}</p>
-  <div class="grundsaetze">{grund}</div>
-</section>
-{kartenraster()}"""
-    return seite(f"{PERSON['name']} · {REIHE}", PERSON["lead"], inhalt)
-
-
 def projektseite(i: int, p) -> str:
     s, nr = p["slug"], i + 1
     kacheln = "".join(f'<div class="kachel"><span class="zahl">{escape(z)}</span><span>{escape(t)}</span></div>'
@@ -318,13 +305,37 @@ def projektseite(i: int, p) -> str:
 
 # --- Ablauf --------------------------------------------------------------------------------
 
+def datenschutzseite() -> str:
+    m = escape(PERSON["mail"])
+    inhalt = f"""<section class="rahmen textseite">
+  <h1>Datenschutz</h1>
+  <p>Diese Website ist ein privates, nicht kommerzielles Portfolio. Sie setzt keine Cookies, nutzt
+  keine Analyse- oder Tracking-Dienste und lädt nichts von fremden Servern: Schriften, Bilder und
+  Berichte liegen hier auf dem Server.</p>
+  <h2>Verantwortlich</h2>
+  <p>{escape(PERSON['name'])}, Leipzig · <a href="mailto:{m}">{m}</a></p>
+  <h2>Hosting</h2>
+  <p>Die Website liegt bei Netlify, Inc. (USA). Beim Aufruf verarbeitet Netlify technisch nötige
+  Daten wie IP-Adresse, Zeitpunkt und aufgerufene Seite, um die Seiten auszuliefern und vor
+  Missbrauch zu schützen (Art. 6 Abs. 1 lit. f DSGVO). Dabei können Daten in die USA übertragen
+  werden. Mehr dazu in der <a href="https://www.netlify.com/privacy/">Datenschutzerklärung von Netlify</a>.</p>
+  <h2>E-Mail</h2>
+  <p>Wer mir schreibt, dessen Angaben nutze ich nur, um zu antworten.</p>
+  <h2>Ihre Rechte</h2>
+  <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung
+  sowie auf Beschwerde bei einer Datenschutz-Aufsichtsbehörde.</p>
+</section>"""
+    return seite(f"Datenschutz · {PERSON['name']}", "Hinweise zum Datenschutz", inhalt, tiefe=1)
+
+
 def bauen(mit_zip: bool):
     schrift_vorbereiten()
     if SITE.exists():
         shutil.rmtree(SITE)
     dateien_vorbereiten()
     (SITE / "index.html").write_text(startseite_karte(), encoding="utf-8")
-    (SITE / "variante-kacheln.html").write_text(startseite_kacheln(), encoding="utf-8")
+    (SITE / "datenschutz").mkdir()
+    (SITE / "datenschutz" / "index.html").write_text(datenschutzseite(), encoding="utf-8")
     for i, p in enumerate(PROJEKTE):
         (SITE / p["slug"]).mkdir()
         (SITE / p["slug"] / "index.html").write_text(projektseite(i, p), encoding="utf-8")

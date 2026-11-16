@@ -16,10 +16,7 @@ PERSON = {
     "titel": "Offene Daten über Leipzig, so aufbereitet, dass man sie versteht.",
     "lead": "Stadtentwicklung, Klima und Mobilität in Leipzig, untersucht mit offenen Daten "
             "und als Bericht für alle aufgeschrieben.",
-    "grundsaetze": [
-        ("Offene Daten", "Stadt Leipzig, Landesamt GeoSN, Verkehrsverbund MDV, Zensus 2022."),
-        ("Für alle lesbar", "Berichte für Laien, der Code liegt offen auf GitHub."),
-    ],
+    "mail": "fynyork@gmail.com",
 }
 
 PROJEKTE = [
